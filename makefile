@@ -3,8 +3,8 @@ DEPS=stdc++.h
 RM=rm
 CPP=g++
 
-partition: partition.cc  $(DEPS)
-	$(CPP) $(CPPFLAGS) partition.cc -o partition 
+partition: $(DEPS)
+	$(CPP) $(CPPFLAGS) partition.cc -o partition
 
 %.o: %.cc $(DEPS)
 	$(CPP) $(CPPFLAGS) $< -o $@

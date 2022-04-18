@@ -7,15 +7,16 @@ default_random_engine gen;
 
 // Performs KK on a set of numbers
 ll kk(vector<ll> v) {
+    for (int i = 0; i < (int) v.size(); i++) cout << v[i] << endl;
     Heap<ll> h(v);
 
-    while(h.len > 1)
-    {
+    while(h.len > 1) {
         ll m1 = h.extract_max(0);
         ll m2 = h.extract_max(0);
-
+        // cout << m1 << endl;
+        // cout << m2 << endl;
         ll res = m1 - m2;
-
+        // cout << res << endl;
         if (res == m1) return m1; 
         h.insert(res);
     }
@@ -38,7 +39,7 @@ vector<int> partition(int n) {
 ll group_kk(vector<ll> v, vector<int> partition) {
     assert(v.size() == partition.size());
     vector<ll> group(v.size(), (ll) 0);
-    for (int i = 0; i < v.size(); i++) {
+    for (int i = 0; i < (int) v.size(); i++) {
         group[partition[i]] += v[i];
     }
     return kk(group);
