@@ -1,11 +1,11 @@
 #include "stdc++.h"
+#include "partition_lib.cc"
 #include <chrono>
 using namespace std;
 using namespace std::chrono;
 
-int T = 50;
+int TRIALS = 50;
 int N = 100;
-ll R = LLONG_MAX;
 
 string input_folder = "experiments/inputs/";
 string output_folder = "experiments/outputs/";
@@ -14,25 +14,22 @@ int main(int argc, char **argv)
 {
     // Setting up args
     int n, t;
-    ll r;
     if (argc < 4)
     {
-        t = T;
+        t = TRIALS;
         n = N;
-        r = R;
     }
     else
     {
         t = stoi(argv[1]);
         n = stoi(argv[2]);
-        r = stoll(argv[3]);
     }
 
-    ofstream f(output_folder + "recorded_times.csv");
+    ofstream f(output_folder + "data.csv");
 
     f << "Input, Repeated Random, Hill Climbing, Sim. Annealing, Prep. Repeated Rand, Prep. Hill Climbing, Prep. Sim. Annealing,\n";
 
-    for (int i = t; i < n; i += 1)
+    for (int i = 0; i < t; i += 1)
     {
         string fname = input_folder + "t";
         fname += to_string(i);
@@ -51,14 +48,14 @@ int main(int argc, char **argv)
 
         // Getting residuals
 
-        ll res_rep_rand = 0;
-        ll res_hill = 0;
-        ll res_sim = 0;
-        ll res_prep_rep_rand = 0;
-        ll res_prep_hill = 0;
-        ll res_prep_sim = 0;
+        ll res_rep_rand = repeated_random(v, true);
+        ll res_hill = regular_hill_climb(v);
+        ll res_sim = regular_sim_anal(v);
+        ll res_prep_rep_rand = repeated_random(v, false);
+        ll res_prep_hill = partition_hill_climb(v);
+        ll res_prep_sim = partition_sim_anal(v);
 
-        f << to_string(i) << ", " << res_rep_rand << ", " << res_hill << res_sim << res_prep_rep_rand << res_prep_hill << res_prep_sim << ",\n";
+        f << to_string(i) << ", " << res_rep_rand << ", " << res_hill << ", " << res_sim << ", " << res_prep_rep_rand << ", " << res_prep_hill << ", " << res_prep_sim << ",\n";
     }
 
     f.close();

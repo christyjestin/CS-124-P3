@@ -3,11 +3,14 @@ DEPS=stdc++.h utils.cc heap.cc
 RM=rm
 CPP=g++
 
-partition: $(DEPS)
+partition: $(DEPS) partition.cc
 	$(CPP) $(CPPFLAGS) partition.cc -o partition
 
+gen_outputs: $(DEPS) gen_outputs.cc
+	$(CPP) $(CPPFLAGS) gen_outputs.cc -o gen_outputs.o
+
 %: %.cc $(DEPS)
-	$(CPP) $(CPPFLAGS) $< -o $@
+	$(CPP) $(CPPFLAGS) $< -o $@.o
 
 clean:
-	$(RM) partition *.o
+	$(RM) *.o partition
