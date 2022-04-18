@@ -1,6 +1,8 @@
 #include "stdc++.h"
 using namespace std;
 
+default_random_engine gen{(unsigned int)time(0)};
+
 int T = 50;
 int N = 100;
 ll R = LLONG_MAX;
@@ -25,7 +27,7 @@ int main(int argc, char **argv)
         r = stoll(argv[3]);
     }
 
-    srand((int)time(0));
+    uniform_int_distribution<ll> unif((ll) 0, (ll) pow(10, 12));
     for (int i = 0; i < t; i++)
     {
         // Create new file
@@ -37,7 +39,7 @@ int main(int argc, char **argv)
 
         for (int j = 0; j < n; j++)
         {
-            f << rand() % r;
+            f << unif(gen) % r;
             f << endl;
         }
 
