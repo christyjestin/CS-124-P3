@@ -12,195 +12,234 @@ int MAX_ITER = 25;
 bernoulli_distribution coin_flip(0.5);
 
 // randomly generate assignment by flipping a coin for each element and then calculate the residual
-ll regular_random(vector<ll> v) {
+ll regular_random(vector<ll> v)
+{
     ll residual = 0;
-    for (int j = 0; j < (int) v.size(); j++) {
+    for (int j = 0; j < (int)v.size(); j++)
+    {
         residual += coin_flip(gen) ? v[j] : -v[j];
     }
     return abs(residual);
 }
 
 // generate a random partition and then run karmarkar-karp with that partition
-inline ll prepartition_random(vector<ll> v) {
+inline ll prepartition_random(vector<ll> v)
+{
     return group_kk(v, partition(v.size()));
 }
 
-ll repeated_random(vector<ll> v, bool use_regular_rep) {
+ll repeated_random(vector<ll> v, bool use_regular_rep)
+{
     ll residual = -1;
-    for (int iter = 0; iter <= MAX_ITER; iter++) {
+    for (int iter = 0; iter <= MAX_ITER; iter++)
+    {
         ll current = use_regular_rep ? regular_random(v) : prepartition_random(v);
-        if (residual == -1 || current < residual) residual = current;
+        if (residual == -1 || current < residual)
+            residual = current;
     }
     return residual;
 }
 
-ll regular_hill_climb(vector<ll> v) {
-    uniform_int_distribution<int> i_dist(0, v.size()-1);
-    uniform_int_distribution<int> j_dist(0, v.size()-2);
+ll regular_hill_climb(vector<ll> v)
+{
+    uniform_int_distribution<int> i_dist(0, v.size() - 1);
+    uniform_int_distribution<int> j_dist(0, v.size() - 2);
     vector<bool> assignment;
     ll residual = 0;
     // random initial assignment
-    for (int j = 0; j < (int) v.size(); j++) {
+    for (int j = 0; j < (int)v.size(); j++)
+    {
         assignment.push_back(coin_flip(gen));
         residual += assignment.back() ? v[j] : -v[j];
     }
 
-    for (int iter = 0; iter < MAX_ITER; iter++) {
+    for (int iter = 0; iter < MAX_ITER; iter++)
+    {
         // randomly generate two indices i,j with i \neq j
         int i = i_dist(gen);
         int j = j_dist(gen);
-        if (j >= i) j++;
+        if (j >= i)
+            j++;
 
         bool second_flip = coin_flip(gen);
         // change residual to reflect the neighbor's assignment
         ll neighbor = residual - 2 * (assignment[i] ? v[i] : -v[i]);
-        if (second_flip) neighbor -= 2 * (assignment[j] ? v[j] : -v[j]);
+        if (second_flip)
+            neighbor -= 2 * (assignment[j] ? v[j] : -v[j]);
         // switch to neighbor if the neighbor's assignment is better
-        if (abs(neighbor) < abs(residual)) {
+        if (abs(neighbor) < abs(residual))
+        {
             residual = neighbor;
             assignment[i] = !assignment[i];
-            if (second_flip) assignment[j] = !assignment[j];
+            if (second_flip)
+                assignment[j] = !assignment[j];
         }
     }
     return abs(residual);
 }
 
-ll partition_hill_climb(vector<ll> v) {
-    uniform_int_distribution<int> i_dist(0, v.size()-1);
-    uniform_int_distribution<int> j_dist(0, v.size()-2);
+ll partition_hill_climb(vector<ll> v)
+{
+    uniform_int_distribution<int> i_dist(0, v.size() - 1);
+    uniform_int_distribution<int> j_dist(0, v.size() - 2);
     // random initial assignment
     vector<int> assignment = partition(v.size());
     ll residual = group_kk(v, assignment);
 
-    for (int iter = 0; iter < MAX_ITER; iter++) {
+    for (int iter = 0; iter < MAX_ITER; iter++)
+    {
         // randomly generate two indices i,j with p_i \neq j
         int i = i_dist(gen);
         int j = j_dist(gen);
         int p_i = assignment[i];
-        if (j >= p_i) j++;
+        if (j >= p_i)
+            j++;
 
         assignment[i] = j;
         ll neighbor = group_kk(v, assignment);
         // switch back if the neighbor's assignment isn't better
-        if (neighbor > residual) {
+        if (neighbor > residual)
+        {
             assignment[i] = p_i;
-        } else {
+        }
+        else
+        {
             residual = neighbor;
         }
     }
     return residual;
 }
 
-double T(int iter) {
+double T(int iter)
+{
     return pow(10, 10) * pow(0.8, iter / 300);
 }
 
-ll regular_sim_anal(vector<ll> v) {
-    uniform_int_distribution<int> i_dist(0, v.size()-1);
-    uniform_int_distribution<int> j_dist(0, v.size()-2);
+ll regular_sim_anal(vector<ll> v)
+{
+    uniform_int_distribution<int> i_dist(0, v.size() - 1);
+    uniform_int_distribution<int> j_dist(0, v.size() - 2);
     uniform_real_distribution<double> unif(0.0, 1.0);
     vector<bool> assignment;
     ll residual = 0;
     // random initial assignment
-    for (int j = 0; j < (int) v.size(); j++) {
+    for (int j = 0; j < (int)v.size(); j++)
+    {
         assignment.push_back(coin_flip(gen));
         residual += assignment.back() ? v[j] : -v[j];
     }
     ll max_residual = residual;
 
-    for (int iter = 0; iter < MAX_ITER; iter++) {
+    for (int iter = 0; iter < MAX_ITER; iter++)
+    {
         // randomly generate two indices i,j with i \neq j
         int i = i_dist(gen);
         int j = j_dist(gen);
-        if (j >= i) j++;
+        if (j >= i)
+            j++;
 
         bool second_flip = coin_flip(gen);
         // change residual to reflect the neighbor's assignment
         ll neighbor = residual - 2 * (assignment[i] ? v[i] : -v[i]);
-        if (second_flip) neighbor -= 2 * (assignment[j] ? v[j] : -v[j]);
+        if (second_flip)
+            neighbor -= 2 * (assignment[j] ? v[j] : -v[j]);
         // switch to neighbor if the neighbor's assignment is better or just randomly sometimes
         double prob = exp((residual - neighbor) / T(iter));
-        if (abs(neighbor) < abs(residual) || unif(gen) < prob) {
+        if (abs(neighbor) < abs(residual) || unif(gen) < prob)
+        {
             residual = neighbor;
             assignment[i] = !assignment[i];
-            if (second_flip) assignment[j] = !assignment[j];
+            if (second_flip)
+                assignment[j] = !assignment[j];
         }
-        if (abs(residual) < abs(max_residual)) max_residual = residual;
+        if (abs(residual) < abs(max_residual))
+            max_residual = residual;
     }
     return abs(max_residual);
 }
 
-ll partition_sim_anal(vector<ll> v) {
-    uniform_int_distribution<int> i_dist(0, v.size()-1);
-    uniform_int_distribution<int> j_dist(0, v.size()-2);
+ll partition_sim_anal(vector<ll> v)
+{
+    uniform_int_distribution<int> i_dist(0, v.size() - 1);
+    uniform_int_distribution<int> j_dist(0, v.size() - 2);
     uniform_real_distribution<double> unif(0.0, 1.0);
     // random initial assignment
     vector<int> assignment = partition(v.size());
     ll residual = group_kk(v, assignment);
     ll max_residual = residual;
 
-    for (int iter = 0; iter < MAX_ITER; iter++) {
+    for (int iter = 0; iter < MAX_ITER; iter++)
+    {
         // randomly generate two indices i,j with i \neq j
         int i = i_dist(gen);
         int j = j_dist(gen);
         int p_i = assignment[i];
-        if (j >= i) j++;
+        if (j >= i)
+            j++;
 
         assignment[i] = j;
         ll neighbor = group_kk(v, assignment);
         double prob = exp((residual - neighbor) / T(iter));
         // switch if the neighbor's assignment is better or just randomly sometimes
-        if (neighbor < residual || unif(gen) < prob) {
+        if (neighbor < residual || unif(gen) < prob)
+        {
             residual = neighbor;
-        } else {
+        }
+        else
+        {
             assignment[i] = p_i;
         }
-        if (residual < max_residual) max_residual = residual;
+        if (residual < max_residual)
+            max_residual = residual;
     }
     return max_residual;
 }
 
-vector<ll> parse_file(char *filename) {
+vector<ll> parse_file(char *filename)
+{
     vector<ll> v;
     ifstream file(filename);
-    if (file.is_open()) {
+    if (file.is_open())
+    {
         string line;
-        while (getline(file, line)) v.push_back(stoll(line));
+        while (getline(file, line))
+            v.push_back(stoll(line));
         file.close();
     }
     return v;
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[])
+{
     int flag = atoi(argv[1]);
     assert(flag == 0 && argc == 4);
     int algorithm = atoi(argv[2]);
     assert((algorithm >= 0 && algorithm <= 3) || (algorithm >= 11 && algorithm <= 13));
     vector<ll> v = parse_file(argv[3]);
-    switch (algorithm) {
-        case 0:
-            cout << kk(v) << endl;
-            break;
-        case 1:
-            cout << repeated_random(v, true) << endl;
-            break;
-        case 2:
-            cout << regular_hill_climb(v) << endl;
-            break;
-        case 3:
-            cout << regular_sim_anal(v) << endl;
-            break;
-        case 11:
-            cout << repeated_random(v, false) << endl;
-            break;
-        case 12:
-            cout << partition_hill_climb(v) << endl;
-            break;
-        case 13:
-            cout << partition_sim_anal(v) << endl;
-            break;
-        default:
-            break;
-
+    switch (algorithm)
+    {
+    case 0:
+        cout << kk(v) << endl;
+        break;
+    case 1:
+        cout << repeated_random(v, true) << endl;
+        break;
+    case 2:
+        cout << regular_hill_climb(v) << endl;
+        break;
+    case 3:
+        cout << regular_sim_anal(v) << endl;
+        break;
+    case 11:
+        cout << repeated_random(v, false) << endl;
+        break;
+    case 12:
+        cout << partition_hill_climb(v) << endl;
+        break;
+    case 13:
+        cout << partition_sim_anal(v) << endl;
+        break;
+    default:
+        break;
     }
 }

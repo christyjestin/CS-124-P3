@@ -25,7 +25,7 @@ template <class T>
 Heap<T>::Heap(vector<T> v)
 {
     len = 0;
-    for(auto it = v.begin(); it != v.end(); it++)
+    for (auto it = v.begin(); it != v.end(); it++)
         insert(*it);
 }
 
@@ -50,9 +50,12 @@ int Heap<T>::get_rchild(int i)
 template <class T>
 void Heap<T>::insert(T x)
 {
-    v.push_back(x);
     len++;
     int i = len - 1;
+    if (v.size() >= len)
+        v[i] = x;
+    else
+        v.push_back(x);
     int p = get_parent(i);
     while (v[i] > v[p])
     {

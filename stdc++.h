@@ -54,11 +54,9 @@
 #include <ccomplex>
 #include <cfenv>
 #include <cinttypes>
-#include <cstdalign>
 #include <cstdbool>
 #include <cstdint>
 #include <ctgmath>
-#include <cuchar>
 #endif
 
 // C++
@@ -128,7 +126,6 @@
 // #include <execution>
 #include <filesystem>
 #include <optional>
-#include <memory_resource>
 #include <string_view>
 #include <variant>
 #endif
