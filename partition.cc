@@ -7,7 +7,7 @@ using namespace std;
 // one file for utils: kk, prepartitioning
 // one file for search algorithms
 
-int MAX_ITER = 25;
+int MAX_ITER = 2500;
 
 bernoulli_distribution coin_flip(0.5);
 
@@ -128,7 +128,7 @@ ll regular_sim_anal(vector<ll> v)
         assignment.push_back(coin_flip(gen));
         residual += assignment.back() ? v[j] : -v[j];
     }
-    ll max_residual = residual;
+    ll min_residual = abs(residual);
 
     for (int iter = 0; iter < MAX_ITER; iter++)
     {
@@ -144,7 +144,7 @@ ll regular_sim_anal(vector<ll> v)
         if (second_flip)
             neighbor -= 2 * (assignment[j] ? v[j] : -v[j]);
         // switch to neighbor if the neighbor's assignment is better or just randomly sometimes
-        double prob = exp((residual - neighbor) / T(iter));
+        double prob = exp((abs(residual) - abs(neighbor)) / T(iter));
         if (abs(neighbor) < abs(residual) || unif(gen) < prob)
         {
             residual = neighbor;
@@ -152,10 +152,10 @@ ll regular_sim_anal(vector<ll> v)
             if (second_flip)
                 assignment[j] = !assignment[j];
         }
-        if (abs(residual) < abs(max_residual))
-            max_residual = residual;
+        if (abs(residual) < min_residual)
+            min_residual = abs(residual);
     }
-    return abs(max_residual);
+    return min_residual;
 }
 
 ll partition_sim_anal(vector<ll> v)
@@ -166,7 +166,7 @@ ll partition_sim_anal(vector<ll> v)
     // random initial assignment
     vector<int> assignment = partition(v.size());
     ll residual = group_kk(v, assignment);
-    ll max_residual = residual;
+    ll min_residual = abs(residual);
 
     for (int iter = 0; iter < MAX_ITER; iter++)
     {
@@ -179,7 +179,7 @@ ll partition_sim_anal(vector<ll> v)
 
         assignment[i] = j;
         ll neighbor = group_kk(v, assignment);
-        double prob = exp((residual - neighbor) / T(iter));
+        double prob = exp((abs(residual) - abs(neighbor)) / T(iter));
         // switch if the neighbor's assignment is better or just randomly sometimes
         if (neighbor < residual || unif(gen) < prob)
         {
@@ -189,10 +189,10 @@ ll partition_sim_anal(vector<ll> v)
         {
             assignment[i] = p_i;
         }
-        if (residual < max_residual)
-            max_residual = residual;
+        if (abs(residual) < min_residual)
+            min_residual = abs(residual);
     }
-    return max_residual;
+    return min_residual;
 }
 
 vector<ll> parse_file(char *filename)
