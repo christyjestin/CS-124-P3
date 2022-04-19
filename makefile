@@ -4,8 +4,8 @@ RM=rm
 CPP=g++
 
 partition: $(DEPS) partition.cc
-	$(RM) partition || true
-	$(CPP) $(CPPFLAGS) partition.cc -o %@
+	$(RM) *.o partition || true
+	$(CPP) $(CPPFLAGS) partition.cc -o $@
 
 gen_outputs: $(DEPS) gen_outputs.cc
 	$(CPP) $(CPPFLAGS) gen_outputs.cc -o gen_outputs.o
