@@ -1,10 +1,10 @@
-CPPFLAGS=-std=c++17 -O3 -Wall
+CPPFLAGS=-std=c++17 -O2 -Wall -Wextra -lm -lpthread
 DEPS=stdc++.h utils.cc heap.cc partition_lib.cc
 RM=rm
 CPP=g++
 
 partition: $(DEPS) partition.cc
-	$(RM) partition
+	$(RM) partition || True
 	$(CPP) $(CPPFLAGS) partition.cc -o %@
 
 gen_outputs: $(DEPS) gen_outputs.cc
