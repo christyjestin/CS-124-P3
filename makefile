@@ -1,4 +1,4 @@
-CPPFLAGS=-std=c++17 -O2 -Wall -Wextra -lm -lpthread
+CPPFLAGS=-std=c++17 -O2 -Wall
 DEPS=stdc++.h utils.cc heap.cc partition_lib.cc
 RM=rm
 CPP=g++
