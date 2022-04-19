@@ -5,7 +5,7 @@ CPP=g++
 
 partition: $(DEPS) partition.cc
 	$(RM) partition
-	$(CPP) $(CPPFLAGS) partition.cc -o partition
+	$(CPP) $(CPPFLAGS) partition.cc -o %@
 
 gen_outputs: $(DEPS) gen_outputs.cc
 	$(CPP) $(CPPFLAGS) gen_outputs.cc -o gen_outputs.o
