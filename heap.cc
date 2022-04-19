@@ -52,7 +52,7 @@ void Heap<T>::insert(T x)
 {
     len++;
     int i = len - 1;
-    if (v.size() >= len)
+    if ((int) v.size() >= len)
         v[i] = x;
     else
         v.push_back(x);
