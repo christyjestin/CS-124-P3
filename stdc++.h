@@ -120,34 +120,6 @@
 #include <shared_mutex>
 #endif
 
-#if __cplusplus >= 201703L
-#include <any>
-// #include <execution>
-#include <filesystem>
-#include <optional>
-#include <string_view>
-#include <variant>
-#endif
-
-#if __cplusplus >= 202002L
-#include <barrier>
-#include <bit>
-#include <compare>
-#include <concepts>
-#if __cpp_impl_coroutine
-#include <coroutine>
-#endif
-#include <latch>
-#include <numbers>
-#include <ranges>
-#include <span>
-#include <stop_token>
-#include <semaphore>
-#include <source_location>
-#include <syncstream>
-#include <version>
-#endif
-
 #if __cplusplus > 202002L
 #include <spanstream>
 #endif
