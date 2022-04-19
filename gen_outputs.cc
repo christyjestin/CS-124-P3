@@ -1,8 +1,6 @@
 #include "stdc++.h"
 #include "partition_lib.cc"
-#include <chrono>
 using namespace std;
-using namespace std::chrono;
 
 int TRIALS = 50;
 int N = 100;

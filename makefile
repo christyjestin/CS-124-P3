@@ -1,5 +1,5 @@
 CPPFLAGS=-std=c++17 -O3 -Wall
-DEPS=stdc++.h utils.cc heap.cc
+DEPS=stdc++.h utils.cc heap.cc partition_lib.cc
 RM=rm
 CPP=g++
 
@@ -14,3 +14,6 @@ gen_outputs: $(DEPS) gen_outputs.cc
 
 clean:
 	$(RM) *.o partition
+
+clean_in:
+		$(RM) experiments/inputs/*.txt
