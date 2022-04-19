@@ -8,17 +8,13 @@ default_random_engine gen{(unsigned int)time(0)};
 // Performs KK on a set of numbers
 ll kk(vector<ll> v)
 {
-    // for (int i = 0; i < (int) v.size(); i++) cout << v[i] << endl;
     Heap<ll> h(v);
 
     while (h.len > 1)
     {
         ll m1 = h.extract_max(0);
         ll m2 = h.extract_max(0);
-        // cout << "m1: " << m1 << endl;
-        // cout << "m2: " << m2 << endl;
         ll res = m1 - m2;
-        // cout << "res: " << res << endl;
         if (res == m1)
             return m1;
         h.insert(res);

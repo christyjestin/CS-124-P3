@@ -3,10 +3,6 @@
 
 using namespace std;
 
-// one file for the heap
-// one file for utils: kk, prepartitioning
-// one file for search algorithms
-
 int MAX_ITER = 25000;
 
 bernoulli_distribution coin_flip(0.5);

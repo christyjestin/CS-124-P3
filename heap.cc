@@ -2,7 +2,7 @@
 using namespace std;
 
 /*
-    Code for a Minimum Heap
+    Code for a Maximum Heap
 */
 template <class T>
 class Heap
@@ -114,14 +114,3 @@ T Heap<T>::extract_max(T def)
     max_heapify(0);
     return mn;
 }
-
-// int main ()
-// {
-//     vector<int> v({5,6,3,4,7,10});
-//     Heap<int> h(v);
-
-//     while(h.len != 0)
-//     {
-//         cout << h.extract_max(0) << endl;
-//     }
-// }

@@ -4,17 +4,19 @@ RM=rm
 CPP=g++
 
 partition: $(DEPS) partition.cc
-	$(RM) *.o partition || true
 	$(CPP) $(CPPFLAGS) partition.cc -o $@
 
 gen_outputs: $(DEPS) gen_outputs.cc
-	$(CPP) $(CPPFLAGS) gen_outputs.cc -o gen_outputs.o
+	$(CPP) $(CPPFLAGS) gen_outputs.cc -o $@
 
 %: %.cc $(DEPS)
-	$(CPP) $(CPPFLAGS) $< -o $@.o
+	$(CPP) $(CPPFLAGS) $< -o $@
 
 clean:
-	$(RM) *.o partition
+	$(RM) partition
+
+clean_gen:
+	$(RM) gen_outputs
 
 clean_in:
 		$(RM) experiments/inputs/*.txt
