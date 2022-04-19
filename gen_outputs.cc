@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 
     ofstream f(output_folder + "data.csv");
 
-    f << "Input, Repeated Random, Hill Climbing, Sim. Annealing, Prep. Repeated Rand, Prep. Hill Climbing, Prep. Sim. Annealing,\n";
+    f << "Input, KK, Repeated Random, Hill Climbing, Sim. Annealing, Prep. Repeated Rand, Prep. Hill Climbing, Prep. Sim. Annealing,\n";
 
     for (int i = 0; i < t; i += 1)
     {
@@ -46,6 +46,7 @@ int main(int argc, char **argv)
 
         // Getting residuals
 
+        ll res_kk = kk(v);
         ll res_rep_rand = repeated_random(v, true);
         ll res_hill = regular_hill_climb(v);
         ll res_sim = regular_sim_anal(v);
@@ -53,7 +54,7 @@ int main(int argc, char **argv)
         ll res_prep_hill = partition_hill_climb(v);
         ll res_prep_sim = partition_sim_anal(v);
 
-        f << to_string(i) << ", " << res_rep_rand << ", " << res_hill << ", " << res_sim << ", " << res_prep_rep_rand << ", " << res_prep_hill << ", " << res_prep_sim << ",\n";
+        f << to_string(i) << ", " << res_kk << ", " << res_rep_rand << ", " << res_hill << ", " << res_sim << ", " << res_prep_rep_rand << ", " << res_prep_hill << ", " << res_prep_sim << ",\n";
     }
 
     f.close();

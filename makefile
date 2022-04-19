@@ -17,3 +17,6 @@ clean:
 
 clean_in:
 		$(RM) experiments/inputs/*.txt
+
+clean_out:
+		$(RM) experiments/outputs/data.csv

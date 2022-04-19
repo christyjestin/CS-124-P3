@@ -27,7 +27,7 @@ int main(int argc, char **argv)
         r = stoll(argv[3]);
     }
 
-    uniform_int_distribution<ll> unif((ll) 0, (ll) pow(10, 12));
+    uniform_int_distribution<ll> unif((ll)1, (ll)pow(10, 12));
     for (int i = 0; i < t; i++)
     {
         // Create new file
